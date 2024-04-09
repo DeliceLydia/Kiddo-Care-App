@@ -9,6 +9,9 @@ app.use(express.json());
 
 ConnectionDatabase()
 
+app.get('/', (req, res) => {
+  res.send('Welcome! get a baby sitter of your dream.');
+});
 
 app.use('/api', UserRoutes)
 app.use('/api', UploadRoutes);
