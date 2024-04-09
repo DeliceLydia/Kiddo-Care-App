@@ -38,15 +38,15 @@ const register = async (req, res, next) => {
   }
 };
 
-const sendVerificationEmail = async (email) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "barefootnomad771@gmail.com",
-      pass: "eqtt kcci jtda scxw",
-    },
-  });
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "barefootnomad771@gmail.com",
+    pass: "eqtt kcci jtda scxw",
+  },
+});
 
+const sendVerificationEmail = async (email) => {
   let mailOptions = {
     from: "barefootnomad771@gmail.com",
     to: email,
@@ -56,6 +56,24 @@ const sendVerificationEmail = async (email) => {
 
   await transporter.sendMail(mailOptions);
 };
+
+const sendPasswordResetEmail = (email, resetToken) => {
+  const mailOptions = {
+    from: "barefootnomad771@gmail.com",
+    to: email,
+    subject: 'Password Reset',
+    text: `To reset your password, click the link: https://kiddo-care-app.vercel.app/api/reset-password?token=${resetToken}`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+}
+
 
 const login = async (req, res, next) => {;
   try {
@@ -78,4 +96,4 @@ const login = async (req, res, next) => {;
   }
 };
 
-module.exports = { register, login };
+module.exports = { register, login, sendPasswordResetEmail };
