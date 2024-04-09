@@ -36,3 +36,4 @@ yarn-error.*
 
 .vscode
 node_modules
+yarn.lock
