@@ -9,7 +9,7 @@ app.use(express.json());
 
 ConnectionDatabase()
 
-app.get('/', (req, res) => {
+app.get('/welcome', (req, res) => {
   res.send('Welcome! get a baby sitter of your dream.');
 });
 
