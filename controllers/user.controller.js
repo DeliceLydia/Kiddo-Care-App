@@ -38,8 +38,7 @@ const register = async (req, res, next) => {
   }
 };
 
-const sendVerificationEmail = async (email, verificationToken) => {
-  const verificationLink = `http://localhost:3001/api/login${verificationToken}`;
+const sendVerificationEmail = async (email) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -52,13 +51,13 @@ const sendVerificationEmail = async (email, verificationToken) => {
     from: "barefootnomad771@gmail.com",
     to: email,
     subject: "Email Verification",
-    text: `Click the following link to verify your email: ${verificationLink}`,
+    text: `Click the link to confirm your email: https://kiddo-care-app.vercel.app/api/confirm/${email}`
   };
 
   await transporter.sendMail(mailOptions);
 };
 
-const login = async (req, res, next) => {
+const login = async (req, res, next) => {;
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });
