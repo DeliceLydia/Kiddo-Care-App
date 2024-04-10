@@ -51,7 +51,7 @@ const sendVerificationEmail = async (email) => {
     from: "barefootnomad771@gmail.com",
     to: email,
     subject: "Email Verification",
-    text: `Click the link to confirm your email: http://localhost:3001/api/confirm/${email}`
+    text: `Click the link to confirm your email:  https://kiddo-care-app.vercel.app/api/confirm/${email}`
   };
 
   await transporter.sendMail(mailOptions);
@@ -62,7 +62,7 @@ const sendPasswordResetEmail = (email, resetToken) => {
     from: "barefootnomad771@gmail.com",
     to: email,
     subject: 'Password Reset',
-    text: `To reset your password, click the link: http://localhost:3001/api/reset-password?token=${resetToken}`
+    text: `To reset your password, click the link: https://kiddo-care-app.vercel.app/api/reset-password?token=${resetToken}`
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
