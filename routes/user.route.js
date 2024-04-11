@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../models/user.model");
 const crypto = require("crypto");
-const cors = require('cors')
+import { upload } from "../uploads/upload";
 const {
   register,
   login,
@@ -10,7 +10,7 @@ const {
 
 const router = express.Router();
 
-router.post("/register",register);
+router.post("/register", upload.single('uploadFile'), register);
 router.post("/login", login);
 router.get("/confirm/:email", async (req, res) => {
   try {

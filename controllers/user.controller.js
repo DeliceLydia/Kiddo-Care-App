@@ -18,6 +18,7 @@ const register = async (req, res, next) => {
       gender,
       email,
       password: haspassword,
+      profilePicture: req.file ? req.file.path : null,
     });
     const generateUniqueToken = () => {
       return crypto.randomBytes(20).toString("hex");
@@ -51,7 +52,7 @@ const sendVerificationEmail = async (email) => {
     from: "barefootnomad771@gmail.com",
     to: email,
     subject: "Email Verification",
-    text: `Click the link to confirm your email:  https://kiddo-care-app.onrender.com/api/confirm/${email}`
+    text: `Click the link to confirm your email: https://kiddo-care-app.onrender.com/api/confirm/${email}`
   };
 
   await transporter.sendMail(mailOptions);
