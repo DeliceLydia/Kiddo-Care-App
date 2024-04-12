@@ -3,6 +3,10 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
+    avatar: {
+      type: String,
+      required: true
+    },
     firstname: {
       type: String,
       required: true,
@@ -42,10 +46,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["user", "admin"],
       default: "user",
-    },
-    avatar: {
-      type: String,
-      required: true
     },
     uploadFile: {
       type: String,
