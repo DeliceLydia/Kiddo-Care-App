@@ -17,7 +17,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/welcome', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Welcome! get a baby sitter of your dream.');
 });
 app.use(cors())
