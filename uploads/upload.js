@@ -10,14 +10,26 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype === 'application/pdf' ||
-    file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-  ) {
-    cb(null, true);
+  if (file.fieldname === 'profilePicture') {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only JPEG and PNG files are allowed for profile pictures'), false);
+    }
+  } else if (file.fieldname === 'uploadFile') {
+    if (file.mimetype === 'application/pdf' ||
+        file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF and DOCx files are allowed for document uploads'), false);
+    }
   } else {
-    cb(new Error('Only PDF and DOCx files are allowed'), false);
+    cb(new Error('Unexpected field for file upload'), false);
   }
 };
 
-export const upload = multer({ storage: storage, fileFilter: fileFilter });
+const upload = multer({ storage: storage, fileFilter: fileFilter });
+
+module.exports = {
+  upload
+};

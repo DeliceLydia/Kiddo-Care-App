@@ -43,8 +43,13 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    avatar: {
+      type: String,
+      required: true
+    },
     uploadFile: {
       type: String,
+      required: true
     },
   },
   { timestamps: true }

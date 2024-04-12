@@ -1,7 +1,6 @@
 const express = require("express");
 const ConnectionDatabase = require("./db/connect.db");
 const UserRoutes = require("./routes/user.route")
-const UploadRoutes = require("./routes/upload.route")
 require('dotenv').config()
 const cors = require('cors')
 
@@ -23,7 +22,6 @@ app.get('/welcome', (req, res) => {
 });
 app.use(cors())
 app.use('/api',cors(), UserRoutes)
-app.use('/api', UploadRoutes);
 
 app.listen(3001, () => {
   console.log("server is running");

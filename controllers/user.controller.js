@@ -5,8 +5,17 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 
 const register = async (req, res, next) => {
-  const { firstname, lastname, country, phoneNumber, gender, email, password } =
-    req.body;
+  const {
+    firstname,
+    lastname,
+    country,
+    phoneNumber,
+    gender,
+    email,
+    password,
+    avatar,
+    uploadFile,
+  } = req.body;
   try {
     const haspassword = await bcrypt.hash(password, 10);
 
@@ -18,7 +27,8 @@ const register = async (req, res, next) => {
       gender,
       email,
       password: haspassword,
-      profilePicture: req.file ? req.file.path : null,
+      avatar,
+      uploadFile,
     });
     const generateUniqueToken = () => {
       return crypto.randomBytes(20).toString("hex");
@@ -52,7 +62,7 @@ const sendVerificationEmail = async (email) => {
     from: "barefootnomad771@gmail.com",
     to: email,
     subject: "Email Verification",
-    text: `Click the link to confirm your email: https://kiddo-care-app.onrender.com/api/confirm/${email}`
+    text: `Click the link to confirm your email: https://kiddo-care-app.onrender.com/api/confirm/${email}`,
   };
 
   await transporter.sendMail(mailOptions);
@@ -62,21 +72,20 @@ const sendPasswordResetEmail = (email, resetToken) => {
   const mailOptions = {
     from: "barefootnomad771@gmail.com",
     to: email,
-    subject: 'Password Reset',
-    text: `To reset your password, click the link: https://kiddo-care-app.onrender.com/api/reset-password?token=${resetToken}`
+    subject: "Password Reset",
+    text: `To reset your password, click the link: https://kiddo-care-app.onrender.com/api/reset-password?token=${resetToken}`,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error(error);
     } else {
-      console.log('Email sent: ' + info.response);
+      console.log("Email sent: " + info.response);
     }
   });
-}
+};
 
-
-const login = async (req, res, next) => {;
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });

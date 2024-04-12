@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../models/user.model");
 const crypto = require("crypto");
-import { upload } from "../uploads/upload";
+// const multer = require('multer')
 const {
   register,
   login,
@@ -10,7 +10,18 @@ const {
 
 const router = express.Router();
 
-router.post("/register", upload.single('uploadFile'), register);
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'uploads/');
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + '-' + file.originalname);
+//   }
+// });
+
+// const upload = multer({ storage: storage });
+
+router.post("/register", register);
 router.post("/login", login);
 router.get("/confirm/:email", async (req, res) => {
   try {
