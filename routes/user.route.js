@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../models/user.model");
 const crypto = require("crypto");
-// const multer = require('multer')
+const upload = require('../utils/upload')
 const {
   register,
   login,
@@ -10,18 +10,7 @@ const {
 
 const router = express.Router();
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, 'uploads/');
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, Date.now() + '-' + file.originalname);
-//   }
-// });
-
-// const upload = multer({ storage: storage });
-
-router.post("/register", register);
+router.post("/register", upload.fields([{ name: 'avatar' }, { name: 'document' }]), register);
 router.post("/login", login);
 router.get("/confirm/:email", async (req, res) => {
   try {

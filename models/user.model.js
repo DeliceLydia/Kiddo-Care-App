@@ -9,13 +9,11 @@ const userSchema = new mongoose.Schema(
     },
     firstname: {
       type: String,
-      required: true,
-      unique: true,
+      required: true
     },
     lastname: {
       type: String,
-      required: true,
-      unique: true,
+      required: true
     },
     country: {
       type: String,
@@ -47,7 +45,7 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
-    uploadFile: {
+    document: {
       type: String,
       required: true
     },

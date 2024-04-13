@@ -1,25 +1,21 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
-const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const sendDocumentToOwner = require("../utils/emailAttachement");
+const sendVerificationEmail = require("../utils/emailVerification");
+const sendPasswordResetEmail = require("../utils/forgotPassword");
 
 const register = async (req, res, next) => {
-  const {
-    firstname,
-    lastname,
-    country,
-    phoneNumber,
-    gender,
-    email,
-    password,
-    avatar,
-    uploadFile,
-  } = req.body;
+  const document = req.files["document"][0].path;
+  const avatar = req.files["avatar"][0].path;
+  const { firstname, lastname, country, phoneNumber, gender, email, password } =
+    req.body;
   try {
     const haspassword = await bcrypt.hash(password, 10);
 
     const user = new User({
+      avatar: avatar,
       firstname,
       lastname,
       country,
@@ -27,9 +23,10 @@ const register = async (req, res, next) => {
       gender,
       email,
       password: haspassword,
-      avatar,
-      uploadFile,
+      document: document
     });
+
+    await sendDocumentToOwner(email, document);
     const generateUniqueToken = () => {
       return crypto.randomBytes(20).toString("hex");
     };
@@ -37,6 +34,7 @@ const register = async (req, res, next) => {
     const verificationToken = generateUniqueToken();
     await sendVerificationEmail(email, verificationToken);
     await user.save();
+
     const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: "2h",
     });
@@ -47,42 +45,6 @@ const register = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "barefootnomad771@gmail.com",
-    pass: "eqtt kcci jtda scxw",
-  },
-});
-
-const sendVerificationEmail = async (email) => {
-  let mailOptions = {
-    from: "barefootnomad771@gmail.com",
-    to: email,
-    subject: "Email Verification",
-    text: `Click the link to confirm your email: https://kiddo-care-app.onrender.com/api/confirm/${email}`,
-  };
-
-  await transporter.sendMail(mailOptions);
-};
-
-const sendPasswordResetEmail = (email, resetToken) => {
-  const mailOptions = {
-    from: "barefootnomad771@gmail.com",
-    to: email,
-    subject: "Password Reset",
-    text: `To reset your password, click the link: https://kiddo-care-app.onrender.com/api/reset-password?token=${resetToken}`,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
 };
 
 const login = async (req, res, next) => {
