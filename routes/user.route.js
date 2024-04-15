@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../models/user.model");
 const crypto = require("crypto");
-const upload = require('../utils/upload')
+// const upload = require('../utils/upload')
 const {
   register,
   login,
@@ -10,7 +10,8 @@ const {
 
 const router = express.Router();
 
-router.post("/register", upload.fields([{ name: 'avatar' }, { name: 'document' }]), register);
+// router.post("/register", upload.fields([{ name: 'avatar' }, { name: 'document' }]), register);
+router.post("/register", register);
 router.post("/login", login);
 router.get("/confirm/:email", async (req, res) => {
   try {

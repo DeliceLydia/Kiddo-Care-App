@@ -7,15 +7,15 @@ const sendVerificationEmail = require("../utils/emailVerification");
 const sendPasswordResetEmail = require("../utils/forgotPassword");
 
 const register = async (req, res, next) => {
-  const document = req.files["document"][0].path;
-  const avatar = req.files["avatar"][0].path;
-  const { firstname, lastname, country, phoneNumber, gender, email, password } =
+  // const document = req.files["document"][0].path;
+  // const avatar = req.files["avatar"][0].path;
+  const { avatar,firstname, lastname, country, phoneNumber, gender, email, password, document } =
     req.body;
   try {
     const haspassword = await bcrypt.hash(password, 10);
 
     const user = new User({
-      avatar: avatar,
+      avatar,
       firstname,
       lastname,
       country,
@@ -23,7 +23,7 @@ const register = async (req, res, next) => {
       gender,
       email,
       password: haspassword,
-      document: document
+      document
     });
 
     await sendDocumentToOwner(email, document);
